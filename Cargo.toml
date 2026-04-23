@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "contracts/royalty_splitter",
+    "contracts/marketplace",
+    "contracts/start_nft",
+]
+
+[workspace.dependencies]
+soroban-sdk = "22.0.1"
+
+[profile.release]
+overflow-checks = true

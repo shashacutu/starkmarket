@@ -1,0 +1,15 @@
+[package]
+name = "marketplace"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+royalty-splitter = { path = "../royalty_splitter" }
+start-nft = { path = "../start_nft" }
