@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
-  devIndicators: {
-    appIsrStatus: false,
-  },
   logging: {
     fetches: {
       fullUrl: true,

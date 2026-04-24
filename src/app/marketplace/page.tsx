@@ -6,7 +6,7 @@ import NFTCard from "@/components/NFTCard";
 import ThreeScene from "@/components/ThreeScene";
 import { Wallet, Plus, ShoppingBag, Zap, Loader2, Search, Filter, ArrowLeft, Layout } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RPC_URL, NFT_ID, MARKETPLACE_ID, SPLITTER_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, sorobanRpc } from "@/lib/stellar";
+import { RPC_URL, NFT_ID, MARKETPLACE_ID, SPLITTER_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, sorobanRpc, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey } from "@stellar/stellar-sdk";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -23,26 +23,6 @@ export default function Marketplace() {
 
   const isAdmin = address === ADMIN_WALLET;
 
-  const addrToScVal = (id: string) => {
-    if (id.startsWith("G")) {
-      return xdr.ScVal.scvAddress(
-        xdr.ScAddress.scAddressTypeAccount(
-          xdr.PublicKey.publicKeyTypeEd25519(StrKey.decodeEd25519PublicKey(id))
-        )
-      );
-    } else {
-      return xdr.ScVal.scvAddress(
-        xdr.ScAddress.scAddressTypeContract(StrKey.decodeContract(id))
-      );
-    }
-  };
-
-  const idToScVal = (id: string | number) => xdr.ScVal.scvI128(
-    new xdr.Int128Parts({
-      lo: xdr.Uint64.fromString(id.toString()),
-      hi: xdr.Int64.fromString("0")
-    })
-  );
 
   const waitTransaction = async (hash: string) => {
     let attempts = 0;
@@ -111,10 +91,7 @@ export default function Marketplace() {
         addrToScVal(NFT_ID),
         idToScVal(nft.tokenId || nft.id),
         addrToScVal(NATIVE_TOKEN_ID),
-        xdr.ScVal.scvI128(new xdr.Int128Parts({
-          lo: xdr.Uint64.fromString((Math.floor(parseFloat(nft.price) * 10000000)).toString()),
-          hi: xdr.Int64.fromString("0")
-        })),
+        nativeToScVal(BigInt(Math.floor(parseFloat(nft.price) * 10000000)), { type: "i128" }),
         addrToScVal(address!),
         nativeToScVal(parseInt(nft.royalty), { type: "u32" })
       );
@@ -210,11 +187,8 @@ export default function Marketplace() {
         "approve",
         addrToScVal(address!), 
         addrToScVal(MARKETPLACE_ID),
-        xdr.ScVal.scvI128(new xdr.Int128Parts({
-          lo: xdr.Uint64.fromString(priceInStroops),
-          hi: xdr.Int64.fromString("0")
-        })),
-        xdr.ScVal.scvU32(2500000) 
+        nativeToScVal(BigInt(priceInStroops), { type: "i128" }),
+        nativeToScVal(2500000, { type: "u32" }) 
       );
 
       const approveTx = new TransactionBuilder(await sorobanRpc.getAccount(address!), {

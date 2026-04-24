@@ -23,8 +23,8 @@ import Link from "next/link";
 import ThreeScene from "@/components/ThreeScene";
 import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
 import NFTCard from "@/components/NFTCard";
-import { RPC_URL, MARKETPLACE_ID, NETWORK_PASSPHRASE, sorobanRpc, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon } from "@/lib/stellar";
-import { TransactionBuilder, Address, Contract, xdr, StrKey, Asset, Operation } from "@stellar/stellar-sdk";
+import { RPC_URL, MARKETPLACE_ID, NETWORK_PASSPHRASE, sorobanRpc, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
+import { TransactionBuilder, Address, Contract, xdr, StrKey, Asset, Operation, nativeToScVal } from "@stellar/stellar-sdk";
 
 export default function UserDashboard() {
   const { address, connect, sign } = useStellar();
@@ -35,26 +35,6 @@ export default function UserDashboard() {
   const [hasTrustline, setHasTrustline] = useState<boolean>(true);
   const [isCheckingTrustline, setIsCheckingTrustline] = useState(true);
 
-  const addrToScVal = (id: string) => {
-    if (id.startsWith("G")) {
-      return xdr.ScVal.scvAddress(
-        xdr.ScAddress.scAddressTypeAccount(
-          xdr.PublicKey.publicKeyTypeEd25519(StrKey.decodeEd25519PublicKey(id))
-        )
-      );
-    } else {
-      return xdr.ScVal.scvAddress(
-        xdr.ScAddress.scAddressTypeContract(StrKey.decodeContract(id))
-      );
-    }
-  };
-
-  const idToScVal = (id: string | number) => xdr.ScVal.scvI128(
-    new xdr.Int128Parts({
-      lo: xdr.Uint64.fromString(id.toString()),
-      hi: xdr.Int64.fromString("0")
-    })
-  );
 
   const waitTransaction = async (hash: string) => {
     let attempts = 0;

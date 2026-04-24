@@ -29,7 +29,7 @@ export default function NFTCard({ id, name, price, royalty, creator, imageUrl, i
       transition: {
         delay: index * 0.12,
         duration: 0.5,
-        ease: "easeOut"
+        ease: "easeOut" as any
       }
     }
   };

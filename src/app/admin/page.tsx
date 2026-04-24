@@ -4,7 +4,7 @@ import { useStellar } from "@/context/StellarContext";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, CheckCircle, Clock, AlertTriangle, ArrowRight, ExternalLink, Zap, Package, User } from "lucide-react";
-import { ADMIN_WALLET, sorobanRpc, MARKETPLACE_ID, NFT_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon } from "@/lib/stellar";
+import { ADMIN_WALLET, sorobanRpc, MARKETPLACE_ID, NFT_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey, Asset, Operation } from "@stellar/stellar-sdk";
 import { triggerSuccessBurst } from "@/lib/effects";
 import Link from "next/link";
@@ -44,25 +44,6 @@ export default function AdminPanel() {
       const marketplace = new Contract(MARKETPLACE_ID);
       const nftContract = new Contract(NFT_ID);
       
-      const addrToScVal = (id: string) => {
-        if (id.startsWith("G")) {
-          return xdr.ScVal.scvAddress(
-            xdr.ScAddress.scAddressTypeAccount(
-              xdr.PublicKey.publicKeyTypeEd25519(StrKey.decodeEd25519PublicKey(id))
-            )
-          );
-        } else {
-          return xdr.ScVal.scvAddress(
-            xdr.ScAddress.scAddressTypeContract(StrKey.decodeContract(id))
-          );
-        }
-      };
-      const idToScVal = (id: string | number) => xdr.ScVal.scvI128(
-        new xdr.Int128Parts({
-          lo: xdr.Uint64.fromString(id.toString()),
-          hi: xdr.Int64.fromString("0")
-        })
-      );
 
       const waitTransaction = async (hash: string) => {
         let attempts = 0;
@@ -151,7 +132,7 @@ export default function AdminPanel() {
         addrToScVal(address!), 
         addrToScVal(MARKETPLACE_ID),
         idToScVal(nft.tokenId || nft.id),
-        xdr.ScVal.scvU64(new xdr.Uint64(2500000, 0)) // Match contract u64
+        nativeToScVal(2500000n, { type: "u64" }) // Match contract u64
       );
 
       const approveTx = new TransactionBuilder(await sorobanRpc.getAccount(address!), {
@@ -176,10 +157,7 @@ export default function AdminPanel() {
         addrToScVal(NFT_ID),
         idToScVal(nft.tokenId || nft.id),
         addrToScVal(NATIVE_TOKEN_ID),
-        xdr.ScVal.scvI128(new xdr.Int128Parts({
-          lo: xdr.Uint64.fromString((Math.floor(parseFloat(nft.price) * 10000000)).toString()),
-          hi: xdr.Int64.fromString("0")
-        })),
+        nativeToScVal(BigInt(Math.floor(parseFloat(nft.price) * 10000000)), { type: "i128" }),
         addrToScVal(address!),
         nativeToScVal(parseInt(nft.royalty), { type: "u32" })
       );

@@ -26,3 +26,5 @@ export const NATIVE_TOKEN_ID = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU
 export const NFTMKT_ASSET_CODE = "NFTMKT";
 export const NFTMKT_ISSUER = "GBKNHIATMCYTFZZZUX347NF2SCH7MKMT7HS73HOVCC55CDJEI53I6S5A";
 export const ADMIN_WALLET = "GBKNHIATMCYTFZZZUX347NF2SCH7MKMT7HS73HOVCC55CDJEI53I6S5A";
+export const addrToScVal = (id: string) => nativeToScVal(new Address(id));
+export const idToScVal = (id: string | number) => nativeToScVal(BigInt(id), { type: "i128" });
