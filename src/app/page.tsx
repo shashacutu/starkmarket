@@ -1,6 +1,6 @@
 "use client";
 
-import { useStellar } from "@/hooks/useStellar";
+import { useStellar } from "@/context/StellarContext";
 import ThreeScene from "@/components/ThreeScene";
 import { Zap, Shield, Rocket, Globe, ArrowRight, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { triggerClickEffect } from "@/lib/effects";
 
 export default function Home() {
-  const { address, connect } = useStellar();
+  const { address, error, connect } = useStellar();
 
   const features = [
     {
@@ -42,6 +42,15 @@ export default function Home() {
             STARTNFT_PROTOCOL
           </div>
           <div className="flex items-center gap-8">
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-[10px] text-red-500 font-bold uppercase bg-red-50 px-3 py-1.5 rounded-lg border border-red-100"
+              >
+                {error}
+              </motion.div>
+            )}
             <Link href="/marketplace" className="text-sm font-bold hover:text-indigo-600 transition-colors">Marketplace</Link>
             <motion.button 
               whileHover={{ scale: 1.05 }}
