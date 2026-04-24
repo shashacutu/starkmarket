@@ -17,7 +17,7 @@ jobs:
           targets: wasm32-unknown-unknown
       - name: Install Stellar CLI
         run: |
-          curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh -s -- --dir /home/runner/.cargo/bin
+          curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh -s -- --dir=/home/runner/.cargo/bin
       - name: Run Contract Tests
         run: cargo test
 
