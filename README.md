@@ -10,7 +10,8 @@ A production-ready NFT marketplace built on the Stellar network using Soroban sm
 - **CI/CD**: GitHub Actions for testing and linting, with automated Vercel deployment.
 
 ## Live Demo
-[Live Demo Link (Vercel)](https://nft-royalty-marketplace.vercel.app)
+[Live Demo (Netlify)](https://lambent-marshmallow-09df9a.netlify.app)
+[Deploy History](https://app.netlify.com/projects/lambent-marshmallow-09df9a/deploys)
 
 ## Deployed Contracts (Testnet)
 - **Marketplace**: `CCIGXUYLGJWZK3RZ7SMQD6RXGECU2X56AQTDUCXQH7S5PXKXCYEUWWWL`
@@ -23,7 +24,7 @@ A production-ready NFT marketplace built on the Stellar network using Soroban sm
 - **STARTNFT Deploy**: `196255819e6ab6e8d1e00ba64b56eaefcebfa9f576c4216479de92f978f5c9aa`
 
 ## CI/CD Status
-![CI Status](https://github.com/parthkaran/nft-royalty-marketplace/actions/workflows/ci.yml/badge.svg)
+![CI Status](https://github.com/akshaykimkc/nft/actions/workflows/ci.yml/badge.svg)
 
 ## Mobile View
 ![Mobile View Placeholder](mobile_view.png)
