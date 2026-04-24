@@ -20,6 +20,12 @@ pub struct Listing {
     pub royalty_bps: u32,
 }
 
+#[contracttype]
+#[derive(Clone)]
+pub enum DataKey {
+    Listing(i128),
+}
+
 #[contract]
 pub struct Marketplace;
 
@@ -37,7 +43,6 @@ impl Marketplace {
     ) {
         seller.require_auth();
 
-        // Store listing
         let listing = Listing {
             seller: seller.clone(),
             nft_token: nft_token.clone(),
@@ -47,9 +52,8 @@ impl Marketplace {
             creator,
             royalty_bps,
         };
-        env.storage().instance().set(&nft_id, &listing);
+        env.storage().instance().set(&DataKey::Listing(nft_id), &listing);
 
-        // Transfer NFT to marketplace
         let nft_client = token::Client::new(&env, &nft_token);
         nft_client.transfer(&seller, &env.current_contract_address(), &nft_id);
     }
@@ -57,7 +61,8 @@ impl Marketplace {
     pub fn buy_nft(env: Env, buyer: Address, nft_id: i128, splitter_address: Address) {
         buyer.require_auth();
 
-        let listing: Listing = env.storage().instance().get(&nft_id).unwrap();
+        let listing: Listing = env.storage().instance().get(&DataKey::Listing(nft_id))
+            .expect("Listing not found on blockchain");
 
         let payment_client = token::Client::new(&env, &listing.payment_token);
         let nft_client = token::Client::new(&env, &listing.nft_token);
@@ -82,6 +87,26 @@ impl Marketplace {
         nft_client.transfer(&env.current_contract_address(), &buyer, &listing.nft_id);
 
         // 4. Remove listing
-        env.storage().instance().remove(&nft_id);
+        env.storage().instance().remove(&DataKey::Listing(nft_id));
+    }
+
+    pub fn get_listing(env: Env, nft_id: i128) -> Option<Listing> {
+        env.storage().instance().get(&DataKey::Listing(nft_id))
+    }
+
+    pub fn delist_nft(env: Env, seller: Address, nft_id: i128) {
+        seller.require_auth();
+
+        let listing: Listing = env.storage().instance().get(&DataKey::Listing(nft_id))
+            .expect("Listing not found");
+        
+        if listing.seller != seller {
+            panic!("Not the seller");
+        }
+
+        let nft_client = token::Client::new(&env, &listing.nft_token);
+        nft_client.transfer(&env.current_contract_address(), &seller, &nft_id);
+
+        env.storage().instance().remove(&DataKey::Listing(nft_id));
     }
 }
