@@ -15,8 +15,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
-      - name: Install Soroban CLI
-        run: cargo install --locked soroban-cli
+      - name: Install Stellar CLI
+        run: |
+          curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh -s -- --dir /home/runner/.cargo/bin
       - name: Run Contract Tests
         run: cargo test
 
