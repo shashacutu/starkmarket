@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, Address, Env, Map, Symbol};
+use soroban_sdk::{contract, contractimpl, contracttype, Address, Env};
 
 #[contracttype]
 #[derive(Clone)]
@@ -9,10 +9,10 @@ pub enum DataKey {
 }
 
 #[contract]
-pub struct SorobanNFT;
+pub struct StartNFT;
 
 #[contractimpl]
-impl SorobanNFT {
+impl StartNFT {
     pub fn mint(env: Env, to: Address, id: i128) {
         if env.storage().instance().has(&DataKey::Owner(id)) {
             panic!("already minted");
