@@ -19,16 +19,16 @@ export function StellarProvider({ children }: { children: ReactNode }) {
   // Auto-connect if already allowed
   useEffect(() => {
     const checkConnection = async () => {
+      // Give the extension 500ms to inject itself on production
+      await new Promise(r => setTimeout(r, 500));
+      
       try {
-        const connected = await isConnected();
-        if (connected) {
-          const result = await getAddress();
-          if (result.address) {
-            setAddress(result.address);
-          }
+        const result = await getAddress();
+        if (result && result.address) {
+          setAddress(result.address);
         }
       } catch (err) {
-        console.error("Auto-connect failed:", err);
+        // Silent fail for auto-connect
       }
     };
     checkConnection();
@@ -37,30 +37,36 @@ export function StellarProvider({ children }: { children: ReactNode }) {
   const connect = async () => {
     setError(null);
     try {
-      const connected = await isConnected();
-      if (!connected) {
-        setError("Freighter extension not found. Please install it.");
-        return;
-      }
-
+      // Direct call to getAddress is more reliable than isConnected()
+      // as it forces a permission check/extension discovery
       const result = await getAddress();
+      
       if (result.error) {
-        if (result.error.includes("locked") || result.error.includes("allow")) {
-          setError("Wallet is locked or access denied. Please unlock Freighter and try again.");
+        // More descriptive error handling
+        if (result.error.includes("locked")) {
+          setError("Wallet appears locked. Please unlock Freighter and try again.");
+        } else if (result.error.includes("allow") || result.error.includes("access")) {
+          setError("Access denied. Please authorize this site in Freighter.");
         } else {
-          setError(result.error);
+          setError(`Connection error: ${result.error}`);
         }
         return;
       }
       
       if (result.address) {
         setAddress(result.address);
+        setError(null); // Clear any previous errors
       } else {
-        setError("Wallet is locked. Please unlock Freighter to connect.");
+        setError("Unable to retrieve address. Please check Freighter.");
       }
     } catch (err: any) {
       console.error("Connection error:", err);
-      setError(err.message || "An error occurred while connecting to Freighter");
+      // If the error is about the object not being found, it's likely missing extension
+      if (err.message?.includes("not found") || err.message?.includes("undefined")) {
+        setError("Freighter not detected. Please ensure it is installed and enabled.");
+      } else {
+        setError(err.message || "An unexpected error occurred while connecting");
+      }
     }
   };
 
