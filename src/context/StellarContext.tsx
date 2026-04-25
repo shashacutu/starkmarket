@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { getAddress, isConnected, signTransaction } from "@stellar/freighter-api";
+import { getAddress, isConnected, setAllowed, signTransaction } from "@stellar/freighter-api";
 
 interface StellarContextType {
   address: string | null;
@@ -37,16 +37,20 @@ export function StellarProvider({ children }: { children: ReactNode }) {
   const connect = async () => {
     setError(null);
     try {
-      // Direct call to getAddress is more reliable than isConnected()
-      // as it forces a permission check/extension discovery
+      // In v6, getAddress() might return empty if not authorized.
+      // We call setAllowed() to ensure the prompt is triggered.
+      const allowed = await setAllowed();
+      
+      if (!allowed) {
+        setError("Authorization cancelled or denied. Please authorize the site in Freighter.");
+        return;
+      }
+
       const result = await getAddress();
       
       if (result.error) {
-        // More descriptive error handling
         if (result.error.includes("locked")) {
           setError("Wallet appears locked. Please unlock Freighter and try again.");
-        } else if (result.error.includes("allow") || result.error.includes("access")) {
-          setError("Access denied. Please authorize this site in Freighter.");
         } else {
           setError(`Connection error: ${result.error}`);
         }
@@ -55,13 +59,12 @@ export function StellarProvider({ children }: { children: ReactNode }) {
       
       if (result.address) {
         setAddress(result.address);
-        setError(null); // Clear any previous errors
+        setError(null);
       } else {
-        setError("Unable to retrieve address. Please check Freighter.");
+        setError("Unable to retrieve address. Please check if Freighter is connected to an account.");
       }
     } catch (err: any) {
       console.error("Connection error:", err);
-      // If the error is about the object not being found, it's likely missing extension
       if (err.message?.includes("not found") || err.message?.includes("undefined")) {
         setError("Freighter not detected. Please ensure it is installed and enabled.");
       } else {
