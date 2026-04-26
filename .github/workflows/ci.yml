@@ -18,6 +18,10 @@ jobs:
       - name: Install Stellar CLI
         run: |
           curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh -s -- --dir=/home/runner/.cargo/bin
+      - name: Build Contracts
+        run: |
+          cargo build -p royalty_splitter --target wasm32-unknown-unknown --release
+          cargo build --target wasm32-unknown-unknown --release
       - name: Run Contract Tests
         run: cargo test
 
