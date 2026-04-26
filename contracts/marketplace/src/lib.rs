@@ -52,7 +52,9 @@ impl Marketplace {
             creator,
             royalty_bps,
         };
-        env.storage().instance().set(&DataKey::Listing(nft_id), &listing);
+        env.storage()
+            .instance()
+            .set(&DataKey::Listing(nft_id), &listing);
 
         let nft_client = token::Client::new(&env, &nft_token);
         nft_client.transfer(&seller, &env.current_contract_address(), &nft_id);
@@ -61,7 +63,10 @@ impl Marketplace {
     pub fn buy_nft(env: Env, buyer: Address, nft_id: i128, splitter_address: Address) {
         buyer.require_auth();
 
-        let listing: Listing = env.storage().instance().get(&DataKey::Listing(nft_id))
+        let listing: Listing = env
+            .storage()
+            .instance()
+            .get(&DataKey::Listing(nft_id))
             .expect("Listing not found on blockchain");
 
         let payment_client = token::Client::new(&env, &listing.payment_token);
@@ -71,7 +76,11 @@ impl Marketplace {
         payment_client.transfer(&buyer, &env.current_contract_address(), &listing.price);
 
         // 2. Transfer payment from marketplace to splitter
-        payment_client.transfer(&env.current_contract_address(), &splitter_address, &listing.price);
+        payment_client.transfer(
+            &env.current_contract_address(),
+            &splitter_address,
+            &listing.price,
+        );
 
         // 3. Call Royalty Splitter to distribute funds
         let splitter_client = royalty_splitter_contract::Client::new(&env, &splitter_address);
@@ -97,9 +106,12 @@ impl Marketplace {
     pub fn delist_nft(env: Env, seller: Address, nft_id: i128) {
         seller.require_auth();
 
-        let listing: Listing = env.storage().instance().get(&DataKey::Listing(nft_id))
+        let listing: Listing = env
+            .storage()
+            .instance()
+            .get(&DataKey::Listing(nft_id))
             .expect("Listing not found");
-        
+
         if listing.seller != seller {
             panic!("Not the seller");
         }

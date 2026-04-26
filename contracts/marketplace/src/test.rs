@@ -3,7 +3,7 @@ mod test {
     extern crate royalty_splitter;
     extern crate start_nft;
     use crate::{Marketplace, MarketplaceClient};
-    use soroban_sdk::testutils::{Address as _};
+    use soroban_sdk::testutils::Address as _;
     use soroban_sdk::{token, Address, Env};
 
     #[test]

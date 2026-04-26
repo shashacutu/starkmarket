@@ -30,23 +30,29 @@ impl StartNFT {
         if owner != from {
             panic!("not owner");
         }
-        env.storage().instance().set(&DataKey::Approval(id), &spender);
+        env.storage()
+            .instance()
+            .set(&DataKey::Approval(id), &spender);
     }
 
     pub fn transfer(env: Env, from: Address, to: Address, id: i128) {
         let owner: Address = env.storage().instance().get(&DataKey::Owner(id)).unwrap();
-        
+
         if owner == from {
             from.require_auth();
         } else {
-            let approved: Address = env.storage().instance().get(&DataKey::Approval(id)).unwrap();
+            let approved: Address = env
+                .storage()
+                .instance()
+                .get(&DataKey::Approval(id))
+                .unwrap();
             if approved == from {
-                 // In this case, 'from' is the authorized spender
-                 // But in SEP-41, transfer(from, to, amount) usually auths 'from'.
-                 // If the marketplace is calling it, 'from' in the call is the seller.
+                // In this case, 'from' is the authorized spender
+                // But in SEP-41, transfer(from, to, amount) usually auths 'from'.
+                // If the marketplace is calling it, 'from' in the call is the seller.
             }
             // For Marketplace compatibility:
-            from.require_auth(); 
+            from.require_auth();
         }
 
         env.storage().instance().set(&DataKey::Owner(id), &to);
