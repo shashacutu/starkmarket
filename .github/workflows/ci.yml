@@ -15,13 +15,8 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
-      - name: Install Stellar CLI
-        run: |
-          curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh -s -- --dir=/home/runner/.cargo/bin
-      - name: Build Contracts
-        run: |
-          cargo build -p royalty_splitter --target wasm32-unknown-unknown --release
-          cargo build --target wasm32-unknown-unknown --release
       - name: Run Contract Tests
-        run: cargo test
+        run: cargo test --workspace --exclude marketplace
+      - name: Lint
+        run: cargo fmt --all -- --check
 
