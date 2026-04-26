@@ -1,4 +1,5 @@
 "use client";
+import React, { useState, useEffect } from "react";
 
 import { useStellar } from "@/context/StellarContext";
 import SalesFeed from "@/components/SalesFeed";
@@ -8,7 +9,6 @@ import { Wallet, Plus, ShoppingBag, Zap, Loader2, Search, Filter, ArrowLeft, Lay
 import { motion, AnimatePresence } from "framer-motion";
 import { RPC_URL, NFT_ID, MARKETPLACE_ID, SPLITTER_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, sorobanRpc, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey } from "@stellar/stellar-sdk";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
 import MintModal from "@/components/MintModal";
@@ -250,32 +250,50 @@ export default function Marketplace() {
     }
   };
 
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   return (
-    <main className="min-h-screen bg-white text-indigo-950 relative">
+    <main 
+      className="min-h-screen bg-black text-white relative"
+      onMouseMove={handleMouseMove}
+      style={{
+        // @ts-ignore
+        "--mouse-x": `${mousePos.x}px`,
+        "--mouse-y": `${mousePos.y}px`,
+      } as React.CSSProperties}
+    >
       <ThreeScene />
 
       {/* Header */}
-      <header className="glass-panel sticky top-4 mx-6 mt-4 z-50 p-4 border-none rounded-2xl">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-3 font-bold text-2xl text-indigo-600">
-              <div className="bg-indigo-600 text-white p-2 rounded-xl">
+      <header className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-7xl">
+        <div className="glass-panel !rounded-full py-4 px-10 flex items-center justify-between border-white/10 shadow-2xl">
+          <div className="flex items-center gap-10">
+            <Link href="/" className="flex items-center gap-3 font-black text-2xl text-white">
+              <div className="bg-white text-black p-2 rounded-xl">
                 <Zap size={20} fill="currentColor" />
               </div>
-              START_MKT
+              STARKMARKET
             </Link>
             
-            <div className="hidden md:flex items-center gap-2 bg-indigo-50/50 px-4 py-2 rounded-xl border border-indigo-100">
-              <Search size={18} className="text-indigo-400" />
+            <div className="hidden md:flex items-center gap-4 bg-white/5 px-6 py-2.5 rounded-full border border-white/10">
+              <Search size={18} className="text-white/40" />
               <input 
                 type="text" 
                 placeholder="Search assets..." 
-                className="bg-transparent border-none outline-none text-sm w-64 placeholder:text-indigo-300"
+                className="bg-transparent border-none outline-none text-sm w-64 placeholder:text-white/20 font-bold"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -283,10 +301,9 @@ export default function Marketplace() {
                 triggerClickEffect(e);
                 setIsMintModalOpen(true);
               }}
-              className="glass-button-secondary flex items-center gap-3 text-sm py-3 px-6"
+              className="glass-button-secondary !py-2.5 !px-8 text-xs font-black border-white/10"
             >
-              <Plus size={18} />
-              Mint NFT
+              Mint Asset
             </motion.button>
 
             <motion.button
@@ -296,37 +313,38 @@ export default function Marketplace() {
                 triggerClickEffect(e);
                 connect();
               }}
-              className="glass-button flex items-center gap-3 text-sm py-3"
+              className="glass-button !py-2.5 !px-8 text-xs font-black"
             >
-              <Wallet size={18} />
-              {address ? `${address.slice(0, 6)}...` : "Connect"}
+              {address ? `${address.slice(0, 4)}...${address.slice(-4)}` : "Connect"}
             </motion.button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-12">
+      <div className="max-w-7xl mx-auto px-6 pt-40 pb-20 relative z-10">
+        <div className="flex flex-col gap-16">
           
-          {/* Marketplace Content */}
-          <div className="flex-1 space-y-12">
+          <div className="flex-1 space-y-16">
             <div className="flex items-center justify-between">
-              <h1 className="text-4xl font-extrabold tracking-tight">Active Listings</h1>
+              <div>
+                <h1 className="text-6xl font-black tracking-tightest">MARKETPLACE</h1>
+                <p className="text-white/40 font-bold mt-2 tracking-widest uppercase text-sm">Active Soroban Listings</p>
+              </div>
 
               <Link href="/dashboard">
                 <motion.button 
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-2 glass-panel px-6 py-3 rounded-2xl font-bold text-indigo-950 border border-indigo-100/50 hover:bg-white/80 transition-all"
+                  className="flex items-center gap-3 glass-panel !px-8 !py-4 !rounded-full font-black text-xs uppercase tracking-widest border-white/10 hover:bg-white/5 transition-all"
                 >
-                  <Layout size={18} className="text-indigo-600" />
+                  <Layout size={18} />
                   My Assets
                 </motion.button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {nfts.map((nft, i) => (
                 <div key={nft.id} className="relative group">
                   <NFTCard 
@@ -338,21 +356,16 @@ export default function Marketplace() {
                     <motion.div 
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
-                      className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4 rounded-3xl"
+                      className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center gap-6 rounded-[48px] border border-white/10"
                     >
-                      <p className="font-bold text-indigo-950">Pending Verification</p>
+                      <p className="font-black text-white tracking-widest uppercase text-sm">Pending Verification</p>
                       <button 
                         onClick={() => handleRelease(nft)}
-                        className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-600/20"
+                        className="glass-button !py-4 !px-12"
                       >
                         Verify & Release
                       </button>
                     </motion.div>
-                  )}
-                  {nft.status === "pending" && !isAdmin && (
-                    <div className="absolute top-4 right-4 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">
-                      PENDING
-                    </div>
                   )}
                 </div>
               ))}

@@ -1,4 +1,4 @@
-# NFT Royalty Marketplace on Stellar (Level 4 Submission)
+# STARKMARKET on Stellar (Level 4 Submission)
 
 A production-ready NFT marketplace built on the Stellar network using Soroban smart contracts. This project demonstrates advanced contract patterns, including atomic inter-contract calls for automated royalty distribution and real-time sales tracking.
 
@@ -22,7 +22,7 @@ A production-ready NFT marketplace built on the Stellar network using Soroban sm
 
 ## 🛠️ Advanced Features (Level 4 Focus)
 - **Inter-Contract Calls**: The Marketplace contract atomically invokes the `RoyaltySplitter` contract during a purchase to distribute funds between the seller and the creator in a single, trustless transaction.
-- **Custom NFT Asset**: Implements the `STARTNFT` contract (ERC-721 equivalent on Soroban) for high-fidelity digital assets.
+- **Custom Asset**: Implements the `STARKMARKET` contract (ERC-721 equivalent on Soroban) for high-fidelity digital assets.
 - **Real-Time Event Streaming**: Utilizes Stellar Horizon SSE to provide live updates on sales and listings without page refreshes.
 - **Production-Ready CI/CD**: Fully automated pipeline for smart contract testing and frontend deployment.
 

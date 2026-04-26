@@ -62,55 +62,55 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-indigo-950/20 backdrop-blur-md">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-panel w-full max-w-lg p-8 rounded-[32px] border-none shadow-2xl relative overflow-hidden"
+            className="glass-panel w-full max-w-xl p-12 rounded-[64px] border-white/10 shadow-2xl relative overflow-hidden"
           >
             <button 
               onClick={onClose}
-              className="absolute top-6 right-6 text-indigo-400 hover:text-indigo-600 transition-colors"
+              className="absolute top-8 right-8 text-white/40 hover:text-white transition-colors"
             >
-              <X size={24} />
+              <X size={32} />
             </button>
 
-            <div className="flex items-center gap-3 mb-8">
-              <div className="bg-indigo-600 text-white p-3 rounded-2xl">
-                <Plus size={24} />
+            <div className="flex items-center gap-6 mb-12">
+              <div className="bg-white text-black p-4 rounded-3xl">
+                <Plus size={32} />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-indigo-950">Mint New NFT</h2>
-                <p className="text-indigo-400 text-sm">Submit your asset for verification</p>
+                <h2 className="text-4xl font-black text-white tracking-tightest uppercase">MINT ASSET</h2>
+                <p className="text-white/40 text-sm font-bold tracking-widest uppercase mt-1">Stellar Network Submission</p>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-indigo-900/40 uppercase tracking-widest px-1">Asset Name</label>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] px-2">Asset Name</label>
                 <input
                   required
                   type="text"
-                  placeholder="e.g. Galactic Traveler #001"
-                  className="w-full bg-indigo-50/50 border border-indigo-100 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                  placeholder="GALACTIC TRAVELER #001"
+                  className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 transition-all font-bold"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-indigo-900/40 uppercase tracking-widest px-1">Description</label>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] px-2">Description</label>
                 <textarea
-                  placeholder="Tell the story of your NFT..."
-                  className="w-full bg-indigo-50/50 border border-indigo-100 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all h-32 resize-none"
+                  placeholder="THE STORY OF YOUR ASSET..."
+                  className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 transition-all h-32 resize-none font-bold"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-indigo-900/40 uppercase tracking-widest px-1">Upload Artwork</label>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] px-2">Upload Artwork</label>
                 <div className="relative group">
                   <input
                     type="file"
@@ -130,44 +130,44 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
                   />
                   <label 
                     htmlFor="nft-upload"
-                    className="w-full bg-indigo-50/50 border-2 border-dashed border-indigo-100 rounded-2xl px-5 py-8 flex flex-col items-center justify-center gap-3 cursor-pointer group-hover:border-indigo-300 group-hover:bg-indigo-100/50 transition-all"
+                    className="w-full bg-white/5 border-2 border-dashed border-white/10 rounded-[40px] px-8 py-12 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-white/40 hover:bg-white/10 transition-all"
                   >
                     {formData.imageUrl ? (
-                      <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-lg">
+                      <div className="relative w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/20">
                         <img src={formData.imageUrl} className="w-full h-full object-cover" alt="Preview" />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Plus size={20} className="text-white" />
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Plus size={32} className="text-white" />
                         </div>
                       </div>
                     ) : (
                       <>
-                        <div className="bg-white p-3 rounded-xl shadow-sm text-indigo-400 group-hover:scale-110 transition-transform">
-                          <Plus size={24} />
+                        <div className="bg-white text-black p-4 rounded-2xl shadow-xl">
+                          <Plus size={32} />
                         </div>
-                        <p className="text-sm font-bold text-indigo-400">Click to upload image</p>
+                        <p className="text-sm font-black text-white/40 uppercase tracking-widest">Click to upload</p>
                       </>
                     )}
                   </label>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-indigo-900/40 uppercase tracking-widest px-1">Price (XLM)</label>
+              <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] px-2">Price (XLM)</label>
                   <input
                     required
                     type="number"
-                    placeholder="10"
-                    className="w-full bg-indigo-50/50 border border-indigo-100 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    placeholder="100.00"
+                    className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 transition-all font-bold"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-indigo-900/40 uppercase tracking-widest px-1">Royalty (Locked)</label>
-                  <div className="w-full bg-indigo-100/50 border border-indigo-100 rounded-2xl px-5 py-4 text-indigo-400 font-bold flex items-center justify-between">
-                    <span>2000 BPS</span>
-                    <span className="text-[10px] text-indigo-300">(2 TKN / XLM)</span>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] px-2">Royalty</label>
+                  <div className="w-full bg-white/10 border border-white/20 rounded-3xl px-8 py-5 text-white/60 font-black flex items-center justify-between">
+                    <span>20%</span>
+                    <span className="text-[10px] text-white/20 tracking-tighter uppercase font-bold">Protocol Fixed</span>
                   </div>
                 </div>
               </div>
@@ -176,14 +176,14 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={isSubmitting}
-                className="w-full bg-indigo-600 text-white py-5 rounded-[20px] font-bold shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-3 disabled:opacity-50"
+                className="glass-button !w-full !py-6 !rounded-[32px] !text-lg !font-black !mt-4"
               >
                 {isSubmitting ? (
-                  <Loader2 className="animate-spin" size={20} />
+                  <Loader2 className="animate-spin" size={24} />
                 ) : (
-                  <Sparkles size={20} />
+                  <Sparkles size={24} />
                 )}
-                Submit for Verification
+                SUBMIT FOR VERIFICATION
               </motion.button>
             </form>
 
@@ -191,7 +191,7 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-100 text-xs font-bold text-indigo-600 flex items-center justify-center gap-2"
+                className="mt-10 p-6 rounded-3xl bg-white/10 border border-white/20 text-xs font-black text-white uppercase tracking-widest text-center"
               >
                 {status}
               </motion.div>

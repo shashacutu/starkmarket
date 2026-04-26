@@ -172,25 +172,25 @@ export default function UserDashboard() {
 
   if (!address) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center p-6">
+      <main className="min-h-screen bg-black flex items-center justify-center p-6">
         <ThreeScene />
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-panel max-w-md w-full p-12 rounded-[40px] text-center space-y-8 relative z-10"
+          className="glass-panel max-w-lg w-full p-16 rounded-[64px] text-center space-y-12 relative z-10 border-white/10"
         >
-          <div className="bg-indigo-600 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto text-white shadow-xl shadow-indigo-600/20">
-            <Wallet size={40} />
+          <div className="bg-white w-24 h-24 rounded-[32px] flex items-center justify-center mx-auto text-black shadow-2xl">
+            <Wallet size={48} />
           </div>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-black text-indigo-950">Connect Wallet</h1>
-            <p className="text-indigo-400">Please connect your Stellar wallet to view your creator dashboard.</p>
+          <div className="space-y-4">
+            <h1 className="text-4xl font-black text-white tracking-tightest uppercase">AUTH REQUIRED</h1>
+            <p className="text-white/40 font-bold tracking-widest uppercase text-xs">Connect your Stellar wallet to access the protocol dashboard.</p>
           </div>
           <button 
             onClick={connect}
-            className="w-full bg-indigo-600 text-white py-5 rounded-[24px] font-bold shadow-xl shadow-indigo-600/20 hover:bg-indigo-700 transition-all"
+            className="glass-button !w-full !py-6 !rounded-[32px]"
           >
-            Connect to Get Started
+            Connect Identity
           </button>
         </motion.div>
       </main>
@@ -198,11 +198,11 @@ export default function UserDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-white relative overflow-hidden">
+    <main className="min-h-screen bg-black text-white relative overflow-hidden">
       <ThreeScene />
       
-      {/* Sidebar Navigation (Glass) */}
-      <nav className="fixed left-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4">
+      {/* Sidebar Navigation */}
+      <nav className="fixed left-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6">
         {[
           { icon: Layout, label: "Market", href: "/marketplace" },
           { icon: TrendingUp, label: "Stats", href: "/dashboard" },
@@ -210,25 +210,25 @@ export default function UserDashboard() {
           <Link key={i} href={item.href}>
             <motion.div
               whileHover={{ scale: 1.1, x: 10 }}
-              className="glass-panel p-4 rounded-2xl text-indigo-400 hover:text-indigo-600 hover:bg-white/80 transition-all cursor-pointer"
+              className="glass-panel !p-5 !rounded-3xl border-white/10 text-white/40 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
             >
-              <item.icon size={24} />
+              <item.icon size={28} />
             </motion.div>
           </Link>
         ))}
       </nav>
 
-      <div className="max-w-7xl mx-auto px-12 py-16 relative z-10">
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-16">
-          <div className="space-y-4">
-            <Link href="/marketplace" className="flex items-center gap-2 text-indigo-400 font-bold hover:text-indigo-600 transition-colors mb-4">
-              <ArrowLeft size={18} />
-              Back to Market
+      <div className="max-w-7xl mx-auto px-12 py-24 relative z-10 lg:pl-40">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-16 mb-24">
+          <div className="space-y-8 flex-1">
+            <Link href="/marketplace" className="inline-flex items-center gap-3 text-white/30 font-black uppercase tracking-[0.3em] text-[10px] hover:text-white transition-colors mb-4">
+              <ArrowLeft size={16} />
+              Return to Nexus
             </Link>
-            <h1 className="text-5xl font-black text-indigo-950 tracking-tighter">Creator Dashboard</h1>
-            <div className="flex items-center gap-3 bg-indigo-50 px-4 py-2 rounded-2xl border border-indigo-100 w-fit">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <p className="text-xs font-bold text-indigo-600 truncate max-w-[200px]">{address}</p>
+            <h1 className="text-7xl font-black tracking-tightest leading-none">CREATOR<br/>DASHBOARD</h1>
+            <div className="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-full border border-white/10 w-fit">
+              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              <p className="text-[10px] font-black text-white/60 tracking-widest uppercase">{address}</p>
             </div>
 
             {!hasTrustline && !isCheckingTrustline && (
@@ -237,49 +237,49 @@ export default function UserDashboard() {
                 animate={{ opacity: 1, x: 0 }}
                 onClick={handleAddTrustline}
                 disabled={!!actionStatus}
-                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-xl text-xs font-bold shadow-lg shadow-amber-500/20 hover:bg-amber-600 transition-all"
+                className="flex items-center gap-3 bg-white text-black px-8 py-3 rounded-2xl text-[10px] font-black tracking-widest uppercase shadow-2xl hover:bg-white/80 transition-all"
               >
-                <Zap size={14} />
-                Enable Minting Rewards (Custom Token)
+                <Zap size={16} fill="currentColor" />
+                ENABLE REWARD LEDGER
               </motion.button>
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full lg:w-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 w-full lg:w-auto">
             {[
-              { label: "Total Minted", value: stats.total, icon: Package, color: "indigo" },
-              { label: "Listed", value: stats.listed, icon: Zap, color: "amber" },
-              { label: "Sold", value: stats.sold, icon: ShoppingBag, color: "green" },
-              { label: "Owned", value: stats.owned, icon: CheckCircle, color: "blue" },
-              { label: "Earnings", value: `${stats.revenue} XLM`, icon: TrendingUp, color: "purple" },
+              { label: "MINTED", value: stats.total, icon: Package },
+              { label: "LISTED", value: stats.listed, icon: Zap },
+              { label: "EARNINGS", value: `${stats.revenue} XLM`, icon: TrendingUp },
             ].map((stat, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-panel p-6 rounded-[32px] flex flex-col gap-2 min-w-[140px]"
+                className="glass-panel !p-8 !rounded-[48px] flex flex-col gap-4 border-white/5 min-w-[180px]"
               >
-                <div className={`text-${stat.color}-500 mb-2`}>
-                  <stat.icon size={20} />
+                <div className="text-white/20">
+                  <stat.icon size={24} />
                 </div>
-                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{stat.label}</p>
-                <p className="text-xl font-black text-indigo-950">{stat.value}</p>
+                <div>
+                  <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-1">{stat.label}</p>
+                  <p className="text-3xl font-black text-white tracking-tighter">{stat.value}</p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-2 mb-12 bg-indigo-50/50 p-2 rounded-3xl w-fit border border-indigo-100">
+        <div className="flex flex-wrap items-center gap-4 mb-20 bg-white/5 p-3 rounded-[32px] w-fit border border-white/10">
           {["all", "pending", "listed", "sold", "owned"].map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${
+              className={`px-10 py-4 rounded-[24px] text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
                 filter === f 
-                ? "bg-white text-indigo-600 shadow-lg" 
-                : "text-indigo-400 hover:text-indigo-600"
+                ? "bg-white text-black shadow-2xl" 
+                : "text-white/40 hover:text-white"
               }`}
             >
               {f}
@@ -290,27 +290,25 @@ export default function UserDashboard() {
         {/* NFT Grid */}
         {isLoading ? (
           <div className="h-96 flex items-center justify-center">
-            <div className="animate-spin text-indigo-600">
-              <Zap size={40} />
-            </div>
+            <Loader2 className="animate-spin text-white/20" size={64} />
           </div>
         ) : filteredNfts.length === 0 ? (
-          <div className="glass-panel p-20 rounded-[48px] text-center space-y-6">
-            <div className="bg-indigo-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto text-indigo-200">
-              <Search size={40} />
+          <div className="glass-panel p-32 rounded-[120px] text-center space-y-10 border-white/5">
+            <div className="bg-white/5 w-24 h-24 rounded-[40px] flex items-center justify-center mx-auto text-white/10 border border-white/10">
+              <Search size={48} />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-indigo-950">No assets found</h3>
-              <p className="text-indigo-400">You haven't minted any NFTs matching this filter yet.</p>
+            <div className="space-y-4">
+              <h3 className="text-3xl font-black tracking-tightest uppercase">EMPTY LEDGER</h3>
+              <p className="text-white/30 font-bold tracking-widest uppercase text-xs">No assets detected matching this query.</p>
             </div>
             <Link href="/marketplace">
-              <button className="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold mt-4 shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 transition-all">
-                Go to Marketplace
+              <button className="glass-button !px-12 !py-6">
+                DISCOVER ASSETS
               </button>
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <AnimatePresence mode="popLayout">
               {filteredNfts.map((nft, i) => (
                 <motion.div
@@ -319,18 +317,18 @@ export default function UserDashboard() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative"
+                  transition={{ duration: 0.4 }}
+                  className="relative group"
                 >
                   <NFTCard {...nft} index={i} />
-                  <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
-                    <div className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl backdrop-blur-md ${
-                      nft.owner === address ? "bg-blue-600/90 text-white" :
-                      nft.status === "listed" ? "bg-green-500/90 text-white" :
-                      nft.status === "pending" ? "bg-amber-500/90 text-white" :
-                      "bg-indigo-600/90 text-white"
+                  <div className="absolute top-6 right-6 z-20 flex flex-col gap-3 items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl backdrop-blur-3xl border border-white/20 ${
+                      nft.owner === address ? "bg-white text-black" :
+                      nft.status === "listed" ? "bg-white/20 text-white" :
+                      nft.status === "pending" ? "bg-white/10 text-white/60" :
+                      "bg-white text-black"
                     }`}>
-                      {nft.owner === address ? "owned" : nft.status}
+                      {nft.owner === address ? "OWNED" : nft.status}
                     </div>
                     
                     {nft.status !== "sold" && (
@@ -339,13 +337,13 @@ export default function UserDashboard() {
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handleDeList(nft)}
                         disabled={!!actionStatus}
-                        className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-red-500/80 transition-all shadow-xl"
+                        className="p-4 rounded-[20px] bg-white/5 backdrop-blur-3xl border border-white/10 text-white/40 hover:text-white hover:bg-white/20 hover:border-white/40 transition-all shadow-2xl"
                         title="Delete/Delist Asset"
                       >
                         {actionStatus?.includes(nft.name) ? (
-                          <Loader2 size={16} className="animate-spin" />
+                          <Loader2 size={20} className="animate-spin" />
                         ) : (
-                          <Trash2 size={16} />
+                          <Trash2 size={20} />
                         )}
                       </motion.button>
                     )}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useStellar } from "@/context/StellarContext";
-import { useState, useEffect } from "react";
+import ThreeScene from "@/components/ThreeScene";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, CheckCircle, Clock, AlertTriangle, ArrowRight, ExternalLink, Zap, Package, User } from "lucide-react";
+import { Shield, CheckCircle, Clock, AlertTriangle, ArrowRight, ExternalLink, Zap, Package, User, Loader2 } from "lucide-react";
 import { ADMIN_WALLET, sorobanRpc, MARKETPLACE_ID, NFT_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey, Asset, Operation } from "@stellar/stellar-sdk";
 import { triggerSuccessBurst } from "@/lib/effects";
@@ -190,49 +191,78 @@ export default function AdminPanel() {
     }
   };
 
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   if (!isAdmin) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center p-6">
-        <div className="glass-panel max-w-md w-full p-12 rounded-[40px] text-center space-y-6">
-          <div className="bg-red-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto text-red-500">
-            <Shield size={40} />
+      <main className="min-h-screen bg-black flex items-center justify-center p-6 text-white">
+        <ThreeScene />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass-panel max-w-lg w-full p-16 rounded-[64px] text-center space-y-12 relative z-10 border-white/10"
+        >
+          <div className="bg-white text-black w-24 h-24 rounded-[32px] flex items-center justify-center mx-auto shadow-2xl">
+            <Shield size={48} />
           </div>
-          <h1 className="text-3xl font-black text-indigo-950">Access Denied</h1>
-          <p className="text-indigo-400">Only the platform administrator can access this panel.</p>
-          <Link href="/" className="inline-block text-indigo-600 font-bold hover:underline">Return Home</Link>
-        </div>
+          <div className="space-y-4">
+            <h1 className="text-4xl font-black tracking-tightest uppercase">ACCESS DENIED</h1>
+            <p className="text-white/40 font-bold tracking-widest uppercase text-xs">Administrative credentials required to access this protocol.</p>
+          </div>
+          <Link href="/" className="glass-button !w-full !py-6 !rounded-[32px] inline-block text-center">
+            Return to Nexus
+          </Link>
+        </motion.div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-white p-8">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <main 
+      className="min-h-screen bg-black text-white p-8 relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+      style={{
+        // @ts-ignore
+        "--mouse-x": `${mousePos.x}px`,
+        "--mouse-y": `${mousePos.y}px`,
+      } as React.CSSProperties}
+    >
+      <ThreeScene />
+      
+      <div className="max-w-7xl mx-auto space-y-16 relative z-10 py-12">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="bg-indigo-600 text-white p-4 rounded-3xl shadow-xl shadow-indigo-600/20">
-              <Shield size={32} />
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
+          <div className="flex items-center gap-8">
+            <div className="bg-white text-black p-6 rounded-[32px] shadow-2xl">
+              <Shield size={40} />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-indigo-950">Admin Console</h1>
-              <p className="text-indigo-400 font-medium">Verify and release assets to Testnet</p>
+              <h1 className="text-6xl font-black tracking-tightest leading-none">ADMIN<br/>CONSOLE</h1>
+              <p className="text-white/30 font-black tracking-widest uppercase text-xs mt-3">Stellar Network Governance</p>
             </div>
           </div>
           
-          <div className="flex gap-4">
-            <div className="glass-panel px-6 py-4 rounded-2xl flex items-center gap-3">
-              <Clock className="text-indigo-600" size={20} />
+          <div className="flex gap-6">
+            <div className="glass-panel !px-8 !py-6 !rounded-[32px] flex items-center gap-4 border-white/10">
+              <Clock className="text-white/40" size={24} />
               <div>
-                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Pending</p>
-                <p className="text-xl font-black text-indigo-950">{stats.pending}</p>
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">PENDING</p>
+                <p className="text-3xl font-black tracking-tighter">{stats.pending}</p>
               </div>
             </div>
-            <div className="glass-panel px-6 py-4 rounded-2xl flex items-center gap-3">
-              <CheckCircle className="text-green-500" size={20} />
+            <div className="glass-panel !px-8 !py-6 !rounded-[32px] flex items-center gap-4 border-white/10">
+              <CheckCircle className="text-white/40" size={24} />
               <div>
-                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Verified</p>
-                <p className="text-xl font-black text-indigo-950">{stats.verified}</p>
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">VERIFIED</p>
+                <p className="text-3xl font-black tracking-tighter">{stats.verified}</p>
               </div>
             </div>
           </div>
@@ -242,57 +272,63 @@ export default function AdminPanel() {
         <AnimatePresence>
           {actionStatus && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="p-4 rounded-2xl bg-indigo-600 text-white font-bold text-center shadow-xl shadow-indigo-600/20"
+              className="p-6 rounded-3xl bg-white text-black font-black text-center shadow-2xl tracking-widest uppercase text-xs"
             >
-              {actionStatus}
+              <div className="flex items-center justify-center gap-4">
+                <Loader2 className="animate-spin" size={18} />
+                {actionStatus}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Submissions List */}
-          <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-xl font-bold text-indigo-950 flex items-center gap-2">
-              <Zap className="text-amber-500" size={20} />
-              Awaiting Verification
-            </h2>
+          <div className="lg:col-span-2 space-y-10">
+            <div className="flex items-center gap-4">
+              <Zap className="text-white/20" size={24} />
+              <h2 className="text-2xl font-black tracking-tightest uppercase">Awaiting Release</h2>
+            </div>
             
             {isLoading ? (
-              <div className="h-64 flex items-center justify-center text-indigo-300">Loading submissions...</div>
+              <div className="h-96 flex items-center justify-center">
+                <Loader2 className="animate-spin text-white/10" size={64} />
+              </div>
             ) : pendingNfts.length === 0 ? (
-              <div className="glass-panel p-12 rounded-[32px] text-center text-indigo-300">
-                No pending submissions found.
+              <div className="glass-panel p-24 rounded-[64px] text-center border-white/5">
+                <p className="text-white/20 font-black tracking-widest uppercase text-sm">No pending submissions detected.</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {pendingNfts.map((nft) => (
                   <motion.div
                     key={nft._id}
                     layoutId={nft._id}
-                    className="glass-panel p-6 rounded-[32px] flex items-center justify-between group hover:bg-indigo-50/50 transition-all"
+                    className="glass-card !p-8 !rounded-[48px] flex flex-col md:flex-row md:items-center justify-between gap-8 group"
                   >
-                    <div className="flex items-center gap-6">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-indigo-50 shadow-inner">
+                    <div className="light-spill" />
+                    <div className="flex items-center gap-8 relative z-10">
+                      <div className="w-28 h-28 rounded-3xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl">
                         {nft.imageUrl ? (
-                          <img src={nft.imageUrl} className="w-full h-full object-cover" />
+                          <img src={nft.imageUrl} className="w-full h-full object-cover asset-noir" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-indigo-200">
-                            <Package size={32} />
+                          <div className="w-full h-full flex items-center justify-center text-white/10">
+                            <Package size={40} />
                           </div>
                         )}
                       </div>
                       <div>
-                        <h3 className="text-lg font-black text-indigo-950">{nft.name}</h3>
-                        <div className="flex items-center gap-4 text-sm text-indigo-400 mt-1">
-                          <span className="flex items-center gap-1 font-bold">
-                            <Zap size={14} className="text-amber-500" /> {nft.price} XLM
+                        <h3 className="text-2xl font-black tracking-tightest uppercase">{nft.name}</h3>
+                        <div className="flex flex-wrap items-center gap-6 mt-3">
+                          <span className="flex items-center gap-2 font-black text-xs text-white/40 tracking-widest uppercase">
+                            <Zap size={16} /> {nft.price} XLM
                           </span>
-                          <span className="flex items-center gap-1 font-medium">
-                            <User size={14} /> {nft.creator.slice(0, 6)}...
+                          <span className="flex items-center gap-2 font-black text-xs text-white/40 tracking-widest uppercase">
+                            <User size={16} /> {nft.creator.slice(0, 8)}...
                           </span>
                         </div>
                       </div>
@@ -300,10 +336,9 @@ export default function AdminPanel() {
                     
                     <button
                       onClick={() => handleVerify(nft)}
-                      className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-600/10 hover:bg-indigo-700 transition-all flex items-center gap-2"
+                      className="glass-button !py-4 !px-10 !text-xs relative z-10 shrink-0"
                     >
-                      Release to Testnet
-                      <ArrowRight size={18} />
+                      Verify & Release
                     </button>
                   </motion.div>
                 ))}
@@ -312,39 +347,41 @@ export default function AdminPanel() {
           </div>
 
           {/* Sidebar Info */}
-          <div className="space-y-8">
-            <div className="glass-panel p-8 rounded-[32px] bg-indigo-950 text-white space-y-6">
-              <h3 className="text-xl font-bold flex items-center gap-2">
-                <AlertTriangle className="text-amber-400" size={24} />
-                Admin Guidelines
-              </h3>
-              <ul className="space-y-4 text-indigo-200 text-sm">
-                <li className="flex gap-3">
-                  <span className="text-indigo-500 font-bold">01.</span>
-                  Ensure the image content adheres to platform safety standards.
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-indigo-500 font-bold">02.</span>
-                  Verify the price ratio matches the (2 TKN / XLM) protocol.
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-indigo-500 font-bold">03.</span>
-                  Confirm the metadata is descriptive and professional.
-                </li>
-              </ul>
-              <div className="pt-4">
-                <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-2">Connected Admin</p>
-                <div className="bg-indigo-900/50 p-4 rounded-2xl font-mono text-xs break-all text-indigo-300 border border-indigo-800">
-                  {address}
+          <div className="space-y-10">
+            <div className="glass-panel !p-10 !rounded-[64px] bg-white/5 border-white/10 relative overflow-hidden">
+              <div className="light-spill" />
+              <div className="relative z-10 space-y-10">
+                <h3 className="text-xl font-black tracking-tightest uppercase flex items-center gap-4">
+                  <AlertTriangle className="text-white/20" size={24} />
+                  PROTOCOL RULES
+                </h3>
+                <ul className="space-y-6">
+                  {[
+                    "Confirm asset visual integrity.",
+                    "Verify protocol royalty lock (20%).",
+                    "Audit metadata descriptions."
+                  ].map((rule, i) => (
+                    <li key={i} className="flex gap-4">
+                      <span className="text-white/20 font-black text-xs">0{i+1}</span>
+                      <p className="text-white/40 text-xs font-black uppercase tracking-widest leading-relaxed">{rule}</p>
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-6 border-t border-white/10">
+                  <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">ADMIN IDENTITY</p>
+                  <div className="bg-white/5 p-5 rounded-2xl font-mono text-[10px] break-all text-white/40 border border-white/10 leading-relaxed">
+                    {address}
+                  </div>
                 </div>
               </div>
             </div>
 
             <Link 
               href="/marketplace"
-              className="flex items-center justify-center gap-2 text-indigo-600 font-bold hover:underline"
+              className="flex items-center justify-center gap-3 text-white/30 font-black uppercase tracking-widest text-[10px] hover:text-white transition-colors group"
             >
-              Back to Marketplace <ExternalLink size={16} />
+              Back to Marketplace 
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>

@@ -8,7 +8,7 @@ export const triggerClickEffect = (e: React.MouseEvent) => {
     particleCount: 15,
     spread: 70,
     origin: { x, y },
-    colors: ["#6366f1", "#06b6d4", "#ffffff"],
+    colors: ["#ffffff", "#cccccc", "#666666"],
     shapes: ["circle"],
     ticks: 50,
     gravity: 1.2,
@@ -22,6 +22,6 @@ export const triggerSuccessBurst = () => {
     particleCount: 150,
     spread: 70,
     origin: { y: 0.6 },
-    colors: ["#6366f1", "#06b6d4", "#ffffff"],
+    colors: ["#ffffff", "#cccccc", "#333333"],
   });
 };

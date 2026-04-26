@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useStellar } from "@/context/StellarContext";
 import ThreeScene from "@/components/ThreeScene";
 import { Zap, Shield, Rocket, Globe, ArrowRight, Wallet } from "lucide-react";
@@ -29,29 +30,29 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-white text-indigo-950 selection:bg-indigo-100 relative overflow-hidden">
+    <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black relative overflow-hidden">
       <ThreeScene />
 
       {/* Nav */}
-      <nav className="absolute top-0 w-full z-50 py-8 px-12">
+      <nav className="absolute top-0 w-full z-50 py-12 px-12">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3 font-bold text-2xl tracking-tighter text-indigo-600">
-            <div className="bg-indigo-600 text-white p-2 rounded-xl">
-              <Zap size={20} fill="currentColor" />
+          <div className="flex items-center gap-4 font-black text-3xl tracking-tighter">
+            <div className="bg-white text-black p-2 rounded-2xl">
+              <Zap size={24} fill="currentColor" />
             </div>
-            STARTNFT_PROTOCOL
+            STARKMARKET
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-10">
             {error && (
               <motion.div 
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-[10px] text-red-500 font-bold uppercase bg-red-50 px-3 py-1.5 rounded-lg border border-red-100"
+                className="text-[10px] text-white font-black uppercase bg-white/10 px-4 py-2 rounded-full border border-white/20"
               >
                 {error}
               </motion.div>
             )}
-            <Link href="/marketplace" className="text-sm font-bold hover:text-indigo-600 transition-colors">Marketplace</Link>
+            <Link href="/marketplace" className="text-sm font-black uppercase tracking-widest hover:text-white/60 transition-colors">Marketplace</Link>
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -59,22 +60,22 @@ export default function Home() {
                 triggerClickEffect(e);
                 connect();
               }}
-              className="glass-button text-sm flex items-center gap-2"
+              className="glass-button !py-3 !px-8 text-sm flex items-center gap-3"
             >
-              <Wallet size={16} />
-              {address ? `AUTH: ${address.slice(0, 4)}...` : "Connect Wallet"}
+              <Wallet size={18} />
+              {address ? `${address.slice(0, 4)}...${address.slice(-4)}` : "Connect Wallet"}
             </motion.button>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-48 pb-32 px-6 z-10">
+      <section className="relative pt-64 pb-32 px-6 z-10">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-block bg-indigo-50 text-indigo-600 px-6 py-2 rounded-full font-bold mb-10 text-sm tracking-widest uppercase"
+            className="inline-block bg-white/10 text-white px-8 py-3 rounded-full font-black mb-12 text-xs tracking-[0.3em] uppercase border border-white/20"
           >
             Decentralized Royalty Ledger
           </motion.div>
@@ -82,18 +83,19 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-7xl md:text-9xl font-black mb-12 leading-[0.95] tracking-tightest"
+            className="text-8xl md:text-[10rem] font-black mb-16 leading-[0.85] tracking-tightest"
           >
-            THE NEW ERA OF <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">DIGITAL ASSETS</span>
+            THE NEW ERA <br />
+            OF DIGITAL <br />
+            <span className="text-white/20">ASSETS</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl font-medium text-indigo-900/40 max-w-2xl mx-auto mb-16 leading-relaxed"
+            className="text-xl font-bold text-white/40 max-w-2xl mx-auto mb-20 leading-relaxed tracking-wide"
           >
-            A high-fidelity protocol for minting, trading, and managing NFTs with built-in royalty splitting on the Stellar network.
+            A high-fidelity protocol for minting and trading digital assets with built-in royalty splitting on the Stellar network.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -106,17 +108,17 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => triggerClickEffect(e)}
-                className="glass-button text-xl px-16 py-6 group"
+                className="glass-button text-lg px-20 py-8 group"
               >
                 Enter Marketplace
-                <ArrowRight className="inline-block ml-3 group-hover:translate-x-2 transition-transform" />
+                <ArrowRight className="inline-block ml-4 group-hover:translate-x-3 transition-transform" />
               </motion.button>
             </Link>
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={(e) => triggerClickEffect(e)}
-              className="glass-button-secondary text-xl px-16 py-6"
+              className="glass-button-secondary text-lg px-20 py-8"
             >
               Read Docs
             </motion.button>
@@ -125,9 +127,9 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="relative py-32 px-6 z-10 bg-white/50 backdrop-blur-3xl border-t border-indigo-50">
+      <section className="relative py-48 px-6 z-10 bg-black/80 backdrop-blur-3xl border-t border-white/5 rounded-t-[120px]">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
             {features.map((f, i) => (
               <motion.div
                 key={i}
@@ -135,13 +137,15 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <div className="bg-indigo-50 w-16 h-16 rounded-3xl flex items-center justify-center border border-indigo-100">
-                  {f.icon}
+                <div className="bg-white/10 w-20 h-20 rounded-[32px] flex items-center justify-center border border-white/20">
+                  <div className="text-white">
+                    {React.cloneElement(f.icon as React.ReactElement, { className: "text-white" })}
+                  </div>
                 </div>
-                <h3 className="text-3xl font-bold">{f.title}</h3>
-                <p className="text-lg text-indigo-900/50 leading-relaxed">{f.desc}</p>
+                <h3 className="text-4xl font-black tracking-tight">{f.title}</h3>
+                <p className="text-xl text-white/40 leading-relaxed font-medium">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -150,18 +154,18 @@ export default function Home() {
 
       {/* Interactive 3D CTA */}
       <section className="relative py-48 px-6 z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto glass-panel p-24 text-center border-none rounded-[64px] relative">
-          <div className="absolute inset-0 bg-indigo-600/5 -z-10" />
-          <h2 className="text-6xl font-black mb-8 leading-tight">READY TO LAUNCH YOUR <br/>NEXT COLLECTION?</h2>
-          <p className="text-xl font-medium text-indigo-900/60 mb-12 max-w-xl mx-auto">
-            Join the protocol today and start distributing royalties automatically across the Stellar network.
+        <div className="max-w-7xl mx-auto glass-panel p-32 text-center border-white/10 rounded-[120px] relative">
+          <div className="absolute inset-0 bg-white/5 -z-10" />
+          <h2 className="text-7xl font-black mb-10 leading-tight tracking-tightest">READY TO LAUNCH <br/>YOUR COLLECTION?</h2>
+          <p className="text-2xl font-bold text-white/40 mb-16 max-w-xl mx-auto">
+            Join the protocol today and start distributing royalties automatically.
           </p>
           <Link href="/marketplace">
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={(e) => triggerClickEffect(e)}
-              className="glass-button text-xl px-16 py-6"
+              className="glass-button text-xl px-20 py-8"
             >
               Launch Marketplace
             </motion.button>
@@ -169,18 +173,18 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-24 px-6 border-t border-indigo-50 text-center font-medium text-indigo-900/30">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-          <div className="flex items-center gap-3 font-bold text-2xl text-indigo-200">
-            <Zap size={20} fill="currentColor" />
-            STARTNFT
+      <footer className="py-32 px-6 border-t border-white/5 text-center font-bold text-white/20 uppercase tracking-[0.5em] text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+          <div className="flex items-center gap-4 font-black text-3xl text-white">
+            <Zap size={24} fill="currentColor" />
+            STARKMARKET
           </div>
-          <div className="flex gap-12">
-            <Link href="#" className="hover:text-indigo-600">Twitter</Link>
-            <Link href="#" className="hover:text-indigo-600">Discord</Link>
-            <Link href="#" className="hover:text-indigo-600">Github</Link>
+          <div className="flex gap-16">
+            <Link href="#" className="hover:text-white transition-colors">Twitter</Link>
+            <Link href="#" className="hover:text-white transition-colors">Discord</Link>
+            <Link href="#" className="hover:text-white transition-colors">Github</Link>
           </div>
-          <span>© 2026 STARTNFT PROTOCOL</span>
+          <span>© 2026 PROTOCOL</span>
         </div>
       </footer>
     </main>

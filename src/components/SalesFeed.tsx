@@ -41,28 +41,31 @@ export default function SalesFeed() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {sales.length === 0 ? (
-        <p className="text-white/40 text-sm font-black uppercase">Scanning network...</p>
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">Network Pulse Active</p>
+        </div>
       ) : (
         <div className="space-y-4">
           <AnimatePresence initial={false}>
             {sales.map((sale) => (
               <motion.div
                 key={sale.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="p-4 rounded-2xl bg-indigo-50/30 border border-indigo-100/50 space-y-2"
+                className="p-5 rounded-3xl bg-white/5 border border-white/10 space-y-3"
               >
-                <div className="flex justify-between items-center text-[10px] text-indigo-900/40 font-bold uppercase tracking-wider">
-                  <span>TX: {sale.id.slice(0, 8)}</span>
-                  <span>{formatDistanceToNow(sale.timestamp)} ago</span>
+                <div className="flex justify-between items-center text-[8px] text-white/20 font-black uppercase tracking-[0.25em]">
+                  <span>HASH: {sale.id.slice(0, 12)}</span>
+                  <span>{formatDistanceToNow(sale.timestamp)} AGO</span>
                 </div>
-                <div className="text-xs font-bold text-indigo-900">
-                  {sale.buyer.slice(0, 8)}... BOUGHT ASSET
+                <div className="text-[10px] font-black text-white/60 tracking-widest uppercase">
+                  {sale.buyer} ACQUIRED ASSET
                 </div>
-                <div className="text-sm font-black text-indigo-600">
+                <div className="text-lg font-black text-white tracking-tighter">
                   {sale.price}
                 </div>
               </motion.div>
