@@ -15,17 +15,17 @@ export default function Home() {
     {
       title: "Soroban Powered",
       desc: "Built on Stellar's high-performance smart contract platform for near-instant execution.",
-      icon: <Zap className="text-indigo-600" />,
+      icon: <Zap className="text-white w-8 h-8" />,
     },
     {
       title: "Creator Royalties",
       desc: "Automated royalty distribution at the protocol level, ensuring creators get paid fairly.",
-      icon: <Shield className="text-indigo-600" />,
+      icon: <Shield className="text-white w-8 h-8" />,
     },
     {
       title: "Global Liquidity",
       desc: "Connect with the global Stellar network for unparalleled asset reach and volume.",
-      icon: <Globe className="text-indigo-600" />,
+      icon: <Globe className="text-white w-8 h-8" />,
     },
   ];
 
@@ -141,7 +141,7 @@ export default function Home() {
               >
                 <div className="bg-white/10 w-20 h-20 rounded-[32px] flex items-center justify-center border border-white/20">
                   <div className="text-white">
-                    {React.cloneElement(f.icon as React.ReactElement, { className: "text-white" })}
+                    {f.icon}
                   </div>
                 </div>
                 <h3 className="text-4xl font-black tracking-tight">{f.title}</h3>
