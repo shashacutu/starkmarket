@@ -3,22 +3,23 @@
 A production-ready NFT marketplace built on the Stellar network using Soroban smart contracts. This project demonstrates advanced contract patterns, including atomic inter-contract calls for automated royalty distribution and real-time sales tracking.
 
 ## 🚀 Live Demo
-- **Live Application**: [https://lambent-marshmallow-09df9a.netlify.app](https://lambent-marshmallow-09df9a.netlify.app)
-- **Deployment Status**: [Netlify Deploys](https://stupendous-starlight-d7d648.netlify.app/)
+- **Live Application**: [https://stupendous-starlight-d7d648.netlify.app/](https://stupendous-starlight-d7d648.netlify.app/)
+- **Repository**: [https://github.com/shashacutu/starkmarket](https://github.com/shashacutu/starkmarket)
 
 ## 📊 CI/CD Status
 ![CI Status](https://github.com/shashacutu/starkmarket/actions/workflows/ci.yml/badge.svg)
 
 ## 📱 Visual Preview
 
-### Mobile Experience
+### Interface Overview
 <p align="center">
-  <img src="hero_mobile.png" width="300" alt="Mobile Hero" />
-  <img src="mobile_view.png" width="300" alt="Mobile Marketplace" />
+  <img src="hero_preview.png" width="800" alt="STARKMARKET Hero" />
 </p>
 
-### Creator Dashboard (Desktop)
-![Creator Dashboard](dashboard_view.png)
+### Creator Dashboard
+<p align="center">
+  <img src="dashboard_preview.png" width="800" alt="STARKMARKET Dashboard" />
+</p>
 
 ## 🛠️ Advanced Features (Level 4 Focus)
 - **Inter-Contract Calls**: The Marketplace contract atomically invokes the `RoyaltySplitter` contract during a purchase to distribute funds between the seller and the creator in a single, trustless transaction.
